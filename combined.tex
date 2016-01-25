@@ -50,32 +50,19 @@
   tabsize=2,	                   % sets default tabsize to 2 spaces
   title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
-\lstset{%
-	language=C,
-  basicstyle=\small\ttfamily,
-  frame=none,
-  framexleftmargin=0pt,
-  captionpos=b,
-  showspaces=false,
-  showstringspaces=false,
-  showtabs=false,
-  tabsize=4,
-  breaklines=true,
-  breakatwhitespace=false}
+
+\newcommand{\filelisting}[2][]{%
+  \lstinputlisting[caption={\texttt{\detokenize\expandafter{#2}}},#1]{#2}%
+}
 
 
-\def\app@exe{\immediate\write18}
-\def\inputAllFiles#1{%
-  \app@exe{ls #1/*.txt | xargs cat >> \jobname.tmp}%
-  \InputIfFileExists{\jobname.tmp}{}
-  \AtEndDocument{\app@exe{rm -f #1/\jobname.tmp}}}
-\makeatother
+\input{FilesList}%
 
 \begin{document}
-\inputAllFiles{.}% from the current dir 
 
-\begin{lstlisting}
-#include <stdio.h>
-\end{lstlisting}
+\foreach \c in \ListAllFiles {%
+    \filelisting{\c}
+}%
+
 \end{document}
 
