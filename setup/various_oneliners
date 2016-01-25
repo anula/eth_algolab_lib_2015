@@ -1,0 +1,41 @@
+# Add to make CGAL use C++11 and reasonable flags
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wshadow")
+
+
+# Add to avoid TLE because of streams/stdio sync
+ios_base::sync_with_stdio(false);
+
+# Complile file on save (needs inotify-tools)
+while inotifywait -e close_write coin_tossing.cpp || true;
+do make coin_tossing;
+echo -e "\033[01;32m---------------\033[00;0m";
+done
+# If inotify is not available look at run_on_change_script.sh, or try:
+while sleep 1 ; do something ; done
+
+
+
+# Delanuay_triangulation:
+# example voronoi.cpp has nice headers
+
+# Quadratic programming:
+# one of examples has nice headers
+
+# Ceil and floor:
+double floor_to_double( const K::FT& x) {
+  double a = std::floor(CGAL::to_double(x));
+  while (a > x) a -= 1;
+  while (a + 1 <= x) a += 1;
+  return a;
+}
+int ceil_to_int(const CGAL::Quotient<ET>& x)
+{
+  double a = std::ceil(CGAL::to_double(x));
+  while (a < x) a += 1;
+  while (a - 1 >= x) a -= 1;
+  return a;
+}
+
+
+
+
